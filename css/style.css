@@ -1,0 +1,117 @@
+.menu-header{
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+	position:inherit !important;
+}
+.navbar-default {
+    background-color: #78cedc !important;
+    border-color: #24363c !important;
+}
+.container {
+	margin:0px !important;
+};
+.navbar{
+	
+}
+.cast-tech .tech-container-first {
+	top:100px;
+}
+.cast-tech .card-elem{
+	min-width: 800px;
+}
+.cast-tech .card-elem2{
+	min-width: 600px;
+
+}
+.cast-tech .card-elem:hover{
+	background: aliceblue;
+	box-shadow: 2px 3px 1px #cec8c8;
+}
+
+.card-language{
+	top:100px;
+}
+.add-border-lang {
+	border-left: 1px solid gray;
+    border-bottom: 1px solid gray;
+    border-right: 1px solid gray;
+}
+.md-chips {
+	font-size: 13px
+}
+.md-chips md-chip {
+    border-radius: 3px
+}
+.md-chips md-chip ._md-chip-remove md-icon {
+        height: 14px;
+        width: 14px
+}
+md-icon {
+height: 14px;
+width: 14px;
+min-height: 14px;
+min-width:14px
+}
+.green-dot{
+	coolor:green;
+	
+}
+.yellow-dot{
+	color:yellow;
+}
+.red-dot{
+	color:red;
+}
+.c-float-right{
+	float:right;
+}
+.fa-search{
+	font-size:1.6em;
+}
+.blue-dot{
+	color:blue;
+}
+.repo-container {
+	min-height: 30px;
+    box-shadow: 1px 1px 1px 0px grey;
+}
+.codeLabel{
+	background:#d0cdcd;
+	padding:1px;
+	
+}
+.section-left{
+	    min-height: 500px;
+	top:100px
+}
+.user-chips{
+	padding: 3px;
+    border-bottom: 1px solid #b7b4b4;
+}
+.cMT100{
+	margin-top:100px;
+}
+.cMT10{
+	margin-top:10px;
+}
+
+.header {
+	font-size:18px;
+	font-weight:bold;
+}
+
+select  {
+    outline: 0;
+    overflow: hidden;
+    height: 30px;
+     background: #85c8d0;
+    color: #ffffff;
+    border: #2c343c;
+    padding: 5px 3px 5px 10px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 10px;
+}
+
+select option {border: 1px solid #000; background: #85c8d0;}

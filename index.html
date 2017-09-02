@@ -1,0 +1,304 @@
+<!doctype html>
+<html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>CAST</title>
+    <link rel="shortcut icon" href="images/cast.gif">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+	
+	<link rel="stylesheet" href="js/font-awesome-4.7.0/css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="js/jquery-ui-1.11.4/jquery-ui.min.css"/>
+	<link rel="stylesheet" href="js/angular-material-1.1.1/angular-material.min.css">
+	<link rel="stylesheet" href="js/bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/style.css"/>
+	
+	
+</head>
+<body ng-app="webApp">
+<div ng-controller="MainController" class="cast-tech">
+	<nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+				<img style="margin:10px;float:left" src="images/cast.gif" width="200" height="50"/> 
+                <ul class="nav navbar-nav">
+                    <li style="float:right;margin-top:10px" class = "'active'" ><a><span ng-click="callHello();" class="menu-header">TECH SCAN</span></a></li>
+                </ul>
+            </div>
+	</nav>
+<div  class="col-md-12">
+	<div ng-include = "currentUrl"></div>
+</div>
+
+
+
+<script type="text/ng-template" id="technology.tpl.html">
+	<div  class="col-md-8 tech-container-first">
+	<div class="card-item" ng-repeat="tech in techologyList" flex-xs flex-gt-xs="50" layout="column">
+		
+      <md-card class="card-elem" md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" ng-click="getRepository(tech)" md-theme-watch>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">{{tech}}</span>
+			
+          </md-card-title-text>
+		  
+          <md-card-title-media style="width:120px;height:120px;margin-bottopm:10px;">
+            <img ng-show="!loadRepo || selectedLanguage != tech" src="images/{{tech}}.png"/>
+			<img ng-show="loadRepo && selectedLanguage == tech" src="images/giphy.gif"/>
+          </md-card-title-media>
+        </md-card-title>
+      </md-card>
+	</div>
+	</div>
+	<div class="col-md-4 card-language">
+<span ng-app="fullHeightModule">
+    <md-toolbar style="background:#78cedc">
+        <div class="md-toolbar-tools">
+            <img src="images/code.png" width="30" height="30"/>Language
+        </div>
+    </md-toolbar>
+    
+    <md-content class="add-border-lang">
+        <md-list>
+            <md-list-item class="md-4-line" ng-repeat="item in languageList">
+                <div class="md-list-item-text" style="display:flex;width:100%">
+                    <h5 style="margin-left:5px;width:80%">{{item.name}}
+						<i  ng-show="item.name.toLowerCase() === 'javascript'" style="color:#e8da67; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="item.name.toLowerCase() === 'java'" style="color:green; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="item.name.toLowerCase() === 'ruby'" style="color:brown; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="item.name.toLowerCase() === 'python'" style="color:blue; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="item.name.toLowerCase() === 'scala'" style="color:red; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="item.name.toLowerCase() === 'html'" style="color:orange; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="item.name.toLowerCase() === 'c#'" style="color:orange; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+					</h5>
+					<span style="margin-top:13px;float:right;margin-right:10px">{{item.valueElem | number : fractionSize}}</span>
+                </div>
+                
+            </md-list-item>
+        </md-list>
+    </md-content>
+	
+</span>
+</div>
+</script>
+
+<script type="text/ng-template" id="repository.tpl.html">
+	<div  class="col-md-8 tech-container-first">
+	<div class="container" ng-init="sortedMech = 'created_at'">
+		<div class=" col-md-4 styled-select blue semi-square">
+			<span><i style="color: #7abad4;cursor:pointer" ng-click="goBackHome()" class="fa fa-2x fa-arrow-circle-o-left" aria-hidden="true"></i></span>
+			<img width="35" height="30" ng-show="loadRepo" src="images/giphy.gif"/>
+			<select ng-options="tech for tech in techologyList" ng-change="getRepository(selectedLanguage)" ng-model="selectedLanguage">
+				
+			</select>
+			
+			<select ng-options="tech for tech in sortMechanism" ng-model="sortedMech">
+			</select>
+		</div>
+		<div class="col-md-6 repo-container" layout ="row">
+			<span style="position:absolute;top:5px;"><i style="margin-right:5px"class="fa fa-bitbucket" aria-hidden="true"></i>Repository <span style="margin-right:10px" class="codeLabel">{{selectedRepoList.total_count}}</span></span>
+		</div>
+		<div class="col-md-10">
+			<div class="card-item" ng-repeat="repo in selectedRepoList.items | orderBy:[sortedMech]" flex-xs flex-gt-xs="50" layout="column">
+				
+				<md-card class="card-elem" md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" ng-click="selectOwner(repo.owner)" md-theme-watch>
+					<md-card-title>
+						<md-card-title-text>
+							<span class="md-headline">{{repo.full_name}}</span>
+							<span class="md-subhead">{{repo.description}}</span>
+						</md-card-title-text>
+						<md-card-title-media>
+							<span style="margin:5px" ng-if="repo.language">
+							<i  ng-show="repo.language.toLowerCase() === 'javascript'" style="color:#e8da67; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="repo.language.toLowerCase() === 'java'" style="color:green; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="repo.language.toLowerCase() === 'ruby'" style="color:brown; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="repo.language.toLowerCase() === 'python'" style="color:blue; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="repo.language.toLowerCase() === 'scala'" style="color:red; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="repo.language.toLowerCase() === 'html'" style="color:orange; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="repo.language.toLowerCase() === 'c#'" style="color:orange; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							
+							{{repo.language}}</span>
+							<span style="margin:5px"><i class="fa fa-star" style=" padding-right:2px" aria-hidden="true"></i>{{repo.stargazers_count}}</span>
+					</md-card-title-media>
+					</md-card-title>
+						<span style="margin-left:15px">Updated on:{{repo.updated_at | date}}</span>
+						<span style="margin:15px"><i class="fa fa-code-fork" style=" padding-right:2px" aria-hidden="true"></i>{{repo.forks_count}}</span>
+					<md-card-content>
+						
+						
+					</md-card-content>
+				</md-card>
+			</div>
+			<div style="float:right;margin-bottom:10px;margin-right:100px">
+			<img width="35" height="30" ng-show="loadRepo" src="images/giphy.gif"/>
+			<a class="btn btn-primary"  ng-disabled="currentPage == 0" ng-click="decrement(currentPage != 0)">
+				Previous
+			</a>
+			{{currentPage+1}}/{{numberOfPages()}}
+			<a class="btn btn-primary"  ng-disabled="currentPage >= selectedRepoList.total_count/pageSize - 1" ng-click="increment(currentPage <= selectedRepoList.total_count/pageSize - 1);">
+				Next
+			</a>
+			</div>
+		</div>
+	</div>
+	</div>
+	<div class="col-md-4 card-language">
+	<span ng-app="fullHeightModule">
+    <md-toolbar style="background:#78cedc">
+        <div class="md-toolbar-tools">
+            <img src="images/code.png" width="30" height="30"/>Language
+        </div>
+    </md-toolbar>
+    
+    <md-content class="add-border-lang">
+        <md-list>
+            <md-list-item class="md-4-line" ng-repeat="item in languageList">
+                <div class="md-list-item-text" style="display:flex;width:100%">
+                    <h5 style="margin-left:5px;width:80%">{{item.name}}
+						<i  ng-show="item.name.toLowerCase() === 'javascript'" style="color:#e8da67; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="item.name.toLowerCase() === 'java'" style="color:green; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="item.name.toLowerCase() === 'ruby'" style="color:brown; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="item.name.toLowerCase() === 'python'" style="color:blue; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="item.name.toLowerCase() === 'scala'" style="color:red; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="item.name.toLowerCase() === 'html'" style="color:orange; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="item.name.toLowerCase() === 'c#'" style="color:orange; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+					</h5>
+					<span style="margin-top:13px;float:right;margin-right:10px">{{item.valueElem | number : fractionSize}}</span>
+                </div>
+                
+            </md-list-item>
+        </md-list>
+    </md-content>
+	</span>
+	</div>
+</script>
+
+<script type="text/ng-template" id="owner.tpl.html">
+<section>
+<div class="col-md-2 section-left">
+	<span ng-click="goBackRepo()"><i style="color: #7abad4;cursor:pointer" class="fa fa-2x fa-arrow-circle-o-left" aria-hidden="true"></i></span>
+	<div>
+		<span><img width="230" height="230" ng-src="{{selectedOwner.avatar_url}}"/></span>
+		<div>
+		<span layout="row" style="font-size:20px; font-weight:bold; margin-left:30px">{{selectedOwner.userProfile.name}}</span>
+		</div>
+		<span style="font-size:14px; margin-left:30px"><i class="fa fa-home" aria-hidden="true"></i>{{selectedOwner.userProfile.location}}</span>
+		<span style="font-size:14px; margin-left:30px">{{selectedOwner.userProfile.bio}}</span>
+		
+	</div>
+	<div>
+		<a class="btn btn-primary" href="{{selectedOwner.userProfile.html_url}}" target="_blank" style="margin-left:30px;width:80%" width="200">Follow</a>
+	</div>
+</div>
+<div class="col-md-10 cMT100" >
+
+	<md-content style="border-left: 2px solid #bfb8b8;">
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab label="repository [{{selectedOwner.userProfile.public_repos}}]">
+        <md-content class="md-padding">
+          <div class="card-item col-md-6" ng-repeat="repo in selectedOwner.repoData " flex-xs flex-gt-xs="50" layout="row">
+				
+				<md-card  class="card-elem2" md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" ng-click="selectOwner(repo.owner)" md-theme-watch>
+					<md-card-title>
+						<md-card-title-text style="min-height:70px">
+							<span class="md-headline" title="{{repo.full_name}}">{{(repo.full_name.length > 20) ? (repo.full_name.substring(0, 20)+'..') : (repo.full_name)}}</span>
+							<span class="md-subhead" title="{{repo.description}}">{{(repo.description.length > 40) ? (repo.description.substring(0, 40)+'..') : (repo.description)}}</span>
+						</md-card-title-text>
+						<md-card-title-media>
+							<span style="margin:5px" ng-if="repo.language">
+							<i  ng-show="repo.language.toLowerCase() === 'javascript'" style="color:#e8da67; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="repo.language.toLowerCase() === 'java'" style="color:green; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="repo.language.toLowerCase() === 'ruby'" style="color:brown; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="repo.language.toLowerCase() === 'python'" style="color:aliceblue; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="repo.language.toLowerCase() === 'scala'" style="color:red; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="repo.language.toLowerCase() === 'html'" style="color:orange; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							<i  ng-show="repo.language.toLowerCase() === 'c#'" style="color:#e8da67; padding-right:2px" class="fa fa-circle" aria-hidden="true"></i>
+							{{repo.language}}</span>
+							<span style="margin:5px"><i class="fa fa-star" style=" padding-right:2px" aria-hidden="true"></i>{{repo.stargazers_count}}</span>
+					</md-card-title-media>
+					</md-card-title>
+						<span style="margin-left:15px">Updated on:{{repo.updated_at | date}}</span>
+						<span style="margin:15px"><i class="fa fa-code-fork" style=" padding-right:2px" aria-hidden="true"></i>{{repo.forks_count}}</span>
+					<md-card-content>
+						
+						
+					</md-card-content>
+				</md-card>
+			</div>
+			<div style="float:right;margin-bottom:10px;">
+			<img width="35" height="30" ng-show="loadRepo" src="images/giphy.gif"/>
+			<a class="btn btn-primary" ng-disabled="currentPageUser == 0" ng-click="decrementUser(currentPageUser != 0)">
+				Previous
+			</a>
+			{{currentPageUser+1}}/{{numberOfPagesUser()}}
+			<a class="btn btn-primary" ng-disabled="currentPageUser >= selectedOwner.userProfile.public_repos/pageSize - 1" ng-click="incrementUser(currentPageUser <= selectedOwner.userProfile.public_repos/pageSize - 1);">
+				Next
+			</a>
+			</div>
+          
+        </md-content>
+      </md-tab>
+      
+	  <md-tab ng-disabled="!selectedOwner.userProfile.followers" ng-click="selectTab(selectedOwner,'followers')" label="followers [{{selectedOwner.userProfile.followers}}]">
+        <md-content class="md-padding">
+          <div style="width:100%;display:flow-root">
+				<i class="fa fa-search  c-float-right" ></i>
+				<input type="text" class="c-float-right" ng-model="searchName" width="400" />
+		  </div>
+		  <div layout="row" class="user-chips" ng-repeat="user in selectedOwner.followerList | filter: searchName">
+			<div class="col-md-4"><img width="60" height="60" ng-src="{{user.avatar_url}}" /> <span>{{user.login}}</span></div>
+			<div class="col-md-8">
+				
+				<span>
+					<a class="btn btn-primary cMT10" href="{{user.html_url}}" target="_blank">
+						Follow
+					</a>
+				</span>
+			</div>
+		  </div>
+		  <div ng-if="!searchName" style="float:right;margin-bottom:10px;">
+			<img width="35" height="30" ng-show="loadRepo" src="images/giphy.gif"/>
+			<a class="btn btn-primary" ng-disabled="currentPageFollower == 0" ng-click="decrementFollower(currentPageFollower != 0)">
+				Previous
+			</a>
+			{{currentPageFollower+1}}/{{numberOfPagesFollower()}}
+			<a class="btn btn-primary" ng-disabled="currentPageFollower >= selectedOwner.userProfile.followers/pageSize - 1" ng-click="incrementFollower(currentPageFollower <= selectedOwner.userProfile.followers/pageSize - 1);">
+				Next
+			</a>
+			</div>
+          
+        </md-content>
+      </md-tab>
+	  <md-tab ng-disabled="!selectedOwner.userProfile.following" label="following [{{selectedOwner.userProfile.following}}]">
+        <md-content class="md-padding">
+          
+        </md-content>
+      </md-tab>
+	  <md-tab label="stars">
+        <md-content class="md-padding">
+          
+          
+        </md-content>
+      </md-tab>
+    </md-tabs>
+  </md-content>
+</div> 
+</script>
+</section>
+</div>
+
+
+<script src="js/angular.min.js"></script>
+<script src="js/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="js/jquery-ui-1.11.4/external/jquery/jquery.js"></script>
+<script src="js/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+<script src="js/angular-material-1.1.1/angular-animate.js"></script>
+<script src="js/angular-material-1.1.1/angular-aria.js"></script>
+<script src="js/angular-material-1.1.1/angular-material.js"></script>
+
+
+<script src="app.js" ></script>
+<script src="js/scripts/technology-controller.js"/>
+
+</body>
